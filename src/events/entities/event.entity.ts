@@ -10,7 +10,7 @@ export class Event extends Document {
   @Prop({ index: true })
   name: string;
 
-  @Prop(SchemaTypes.Mixed)
+  @Prop({type: SchemaTypes.Mixed})
   payload: Record<string, any>;
 }
 

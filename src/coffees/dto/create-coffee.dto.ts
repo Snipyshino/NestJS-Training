@@ -1,4 +1,5 @@
-import { IsString } from 'class-validator';
+import { IsNumber, IsString } from 'class-validator';
+import { Prop } from '@nestjs/mongoose';
 
 export class CreateCoffeeDto {
   @IsString()
