@@ -16,7 +16,9 @@ import { REQUEST } from '@nestjs/core';
 import { Request } from 'express';
 import { Public } from '../common/decorators/public.decorator';
 import { Protocol } from '../common/decorators/protocol.decorator';
+import { ApiForbiddenResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+@ApiTags('coffees')
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeeService: CoffeesService,
@@ -25,6 +27,7 @@ export class CoffeesController {
     console.log('Controller made');
   }
 
+  @ApiForbiddenResponse({ description: 'Verbotten' })
   @Public()
   @Get()
   findAll(@Protocol('https') protocol: string, @Query() paginationQuery: PaginationQueryDto) {
