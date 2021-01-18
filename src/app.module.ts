@@ -8,6 +8,9 @@ import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import * as Joi from 'joi';
 import appConfig from './config/app.config';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpExceptionFilter } from './common/filters/http-exception.filter';
+import { CommonModule } from './common/common.module';
 
 @Module({
   imports: [
@@ -25,13 +28,15 @@ import appConfig from './config/app.config';
       useFactory: () => ({
         uri: process.env.MONGO_URI,
         useCreateIndex: true,
-        useNewUrlParser: true
+        useNewUrlParser: true,
+        useFindAndModify: true
       })
     }
 ),
     CoffeesModule,
     CoffeeRatingModule,
     DatabaseModule,
+    CommonModule
   ],
   controllers: [AppController],
   providers: [AppService],
