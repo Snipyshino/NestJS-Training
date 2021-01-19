@@ -18,16 +18,17 @@ class ProdConfigService {}
 */
 
 // Factory Provider
-@Injectable()
+/*@Injectable()
 export class CoffeeBrandsFactory {
   create() {
     return ['buddy brew', 'nescafe'];
   }
-}
+}*/
 
 @Module({
   imports: [
-    ConfigModule.forFeature(coffeesConfig), // Partial config namespace
+    ConfigModule//.forFeature(coffeesConfig)
+    , // Partial config namespace
     MongooseModule.forFeature([
       {
         name: Coffee.name,

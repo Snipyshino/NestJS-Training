@@ -1,5 +1,5 @@
 import { Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
-import { Coffee } from './entities/coffee.entity';
+import { Coffee, CoffeeDocument } from './entities/coffee.entity';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
@@ -14,17 +14,17 @@ import coffeesConfig from 'src/config/coffees.config';
 export class CoffeesService {
 
   constructor(
-    @InjectModel(Coffee.name) private readonly coffeeModel: Model<Coffee>,
+    @InjectModel(Coffee.name) private readonly coffeeModel: Model<CoffeeDocument>,
     @InjectConnection() private readonly connection: Connection,
-    @InjectModel(Event.name) private readonly eventModel: Model<Event>,
-    private readonly configService: ConfigService,
-    @Inject(coffeesConfig.KEY) private coffeesConfiguration: ConfigType<typeof coffeesConfig>,
+    // @InjectModel(Event.name) private readonly eventModel: Model<Event>,
+    // private readonly configService: ConfigService,
+    // @Inject(coffeesConfig.KEY) private coffeesConfiguration: ConfigType<typeof coffeesConfig>,
     // Non-class-based & Factory Provider
     // @Inject(COFFEE_BRANDS) coffeeBrands: string[],
   ) {
     console.log('CoffeeService Instantiated');
-    console.log(this.configService.get<String>('database.uri'));
-    console.log(coffeesConfiguration.foo);
+    // console.log(this.configService.get<String>('database.uri'));
+    // console.log(coffeesConfiguration.foo);
   }
 
   findAll(paginationQuery: PaginationQueryDto) {
@@ -59,26 +59,26 @@ export class CoffeesService {
     return existingCoffee;
   }
 
-  async recommendCoffee(coffee: Coffee) {
-    const session = await this.connection.startSession();
-    session.startTransaction();
-
-    try {
-      coffee.recommendations++;
-      const recommendEvent = new this.eventModel({
-        name: 'recommend_coffee',
-        type: 'coffee',
-        payload: { coffeeId: coffee.id },
-      });
-      await recommendEvent.save({ session });
-      await coffee.save({ session });
-      await session.commitTransaction();
-    } catch (e) {
-      await session.abortTransaction();
-    } finally {
-      session.endSession();
-    }
-  }
+  // async recommendCoffee(coffee: Coffee) {
+  //   const session = await this.connection.startSession();
+  //   session.startTransaction();
+  //
+  //   try {
+  //     coffee.recommendations++;
+  //     const recommendEvent = new this.eventModel({
+  //       name: 'recommend_coffee',
+  //       type: 'coffee',
+  //       payload: { coffeeId: coffee.id },
+  //     });
+  //     await recommendEvent.save({ session });
+  //     await coffee.save({ session });
+  //     await session.commitTransaction();
+  //   } catch (e) {
+  //     await session.abortTransaction();
+  //   } finally {
+  //     session.endSession();
+  //   }
+  // }
 
   async remove(id: string) {
     await this.coffeeModel

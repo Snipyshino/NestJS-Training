@@ -1,8 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import exp from 'constants';
+
+export type CoffeeDocument = Coffee & Document;
 
 @Schema()
-export class Coffee extends Document {
+export class Coffee {
   @Prop() name: string;
 
   @Prop() brand: string;
